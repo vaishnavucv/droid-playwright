@@ -1,0 +1,14 @@
+# Authentication Credentials
+# Set 'use_email' to true to use email for login, false to use username
+# Set 'use_username' to true to use username for login (if use_email is false)
+
+username: "admin"
+password: "Nse@cadeMy#2025&"
+email: "test@test.com"
+
+# Flags to determine which credential to use
+use_email: false
+use_username: true
+
+# Control filtering of links using link-rules.json
+use_link_rules: true

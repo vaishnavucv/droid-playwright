@@ -1,0 +1,19 @@
+{
+  "name": "nuvepro-palywright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "cheerio": "^1.2.0",
+    "js-yaml": "^4.1.1",
+    "playwright": "^1.58.2"
+  }
+}
