@@ -1,3 +1,5 @@
 .playwright/
 node_modules/
 site_analysis.json
+.env
+nseacademy-staging.nuvepro.io/
