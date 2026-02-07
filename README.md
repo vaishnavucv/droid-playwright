@@ -1,93 +1,82 @@
-# Site Analyzer MCP Server
+# AI Playwright Test Engine 🚀
 
-This tool uses Playwright to deep-crawl a website and analyze its structure, extracting UI components, forms, authentication points, and other interactive elements into a structured JSON format.
+An AI-powered test generation engine that crawls websites (including authenticated sections), analyzes their DOM structure, and generates comprehensive Playwright test cases using GPT-4o.
 
-## Setup
+## 📋 Features
 
-1.  Install dependencies:
-    ```bash
-    npm install
-    npx playwright install chromium
-    ```
+- **Multi-Page Crawler**: Automatically discovers and scans up to 100 internal pages.
+- **Login Automation**: Detects login forms and authenticates using your credentials.
+- **Chunked AI Analysis**: Processes large site data in manageable chunks to avoid token limits.
+- **Playwright-Ready**: Generates actionable test cases with actual CSS selectors and pseudo-code.
+- **Export Formats**: Saves results in both `JSON` and `CSV` formats for easy integration.
 
-### Troubleshooting
+---
 
-If you encounter permission errors during browser installation (e.g., `EACCES: permission denied`), try setting a local browser path:
+## ⚙️ Setup & Installation
 
+Follow these steps when moving to a new system:
+
+### 1. Clone the Repository
 ```bash
-# Set browsers to be installed in the current directory
-export PLAYWRIGHT_BROWSERS_PATH=./.playwright
+git clone https://github.com/vaishnavucv/droid-playwright.git
+cd droid-playwright
+git checkout v2-playwright-ai-engine
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Install Playwright Browsers
+```bash
 npx playwright install chromium
 ```
 
-Then run the scanner with the same environment variable:
+### 4. Configure Environment Variables
+Create a `.env` file in the root directory and add your OpenAI API Key:
+```env
+OPENAI_API_KEY=your_sk_openai_key_here
+```
+
+### 5. Configure Login Credentials
+Edit `config.yml` with your test credentials:
+```yaml
+username: "your_username"
+password: "your_password"
+use_username: true
+use_email: false
+```
+
+---
+
+## 🚀 Running the Engine
+
+To scan a website and generate test cases, run:
 
 ```bash
-export PLAYWRIGHT_BROWSERS_PATH=./.playwright
-node site-scanner.js <URL>
+node ai-test-engine.js <website_url>
 ```
 
-### As an MCP Server
-
-This project provides an MCP server that exposes the `scan_website_deep` tool.
-
-To use it with Claude Desktop or other MCP clients, add the following to your configuration:
-
-```json
-{
-  "mcpServers": {
-    "site-analyzer": {
-      "command": "node",
-      "args": ["/Users/vaishnavucv/nuvepro-palywright/mcp-server.js"],
-      "env": {
-        "PLAYWRIGHT_BROWSERS_PATH": "/Users/vaishnavucv/nuvepro-palywright/.playwright"
-      }
-    }
-  }
-}
+**Example:**
+```bash
+node ai-test-engine.js https://nseacademy-staging.nuvepro.io/
 ```
 
-## Features
+---
 
--   **Deep Crawling**: Visits multiple pages on the same domain (limit: 50 pages).
--   **Element Analysis**: Identifies:
-    -   UI Components
-    -   Forms & Inputs
-    -   Authentication Points (Login/Register)
-    -   Navigation Paths
-    -   File Upload/Download
-    -   Drag & Drop Targets
+## 📂 Output Structure
 
-## Authentication
+All results are saved in a directory named after the website domain (e.g., `nseacademy-staging.nuvepro.io/`):
 
-If the site requires login, you can provide credentials in a `config.yml` file in the project directory:
+- **`site_analysis.json`**: The raw DOM data for all crawled pages.
+- **`test_cases.json`**: Functional, UI, and E2E test cases with Playwright steps.
+- **`test_cases.csv`**: A spreadsheet version of the test plan.
 
-```yaml
-username: "myuser"
-email: "user@example.com" 
-password: "mypassword"
+---
 
-# Flags to select credential type
-use_email: true # Set true to use email
-use_username: false 
-```
+## 🛠️ Troubleshooting
 
-The scanner will automatically attempt to fill and submit login forms when detected, respecting your selection.
-
-## Link Filtering
-
-You can control which URLs are scanned by creating a `link-rules.json` file in the project directory.
-
-First, enable it in `config.yml`:
-```yaml
-use_link_rules: true
-```
-
-Then define your rules in `link-rules.json`:
-```json
-{
-  "include": [],          // If set, only URLs containing these strings will be scanned
-  "exclude": ["logout", "signout"] // URLs containing these strings will be skipped
-}
-```
-Exclusions take priority. If `include` lists are provided, a URL must match at least one include rule AND not match any exclude rules.
+- **Login Failing?**: Ensure the `userSelector` and `passSelector` in `ai-test-engine.js` match your site's login form.
+- **Browser Not Found?**: Run `npx playwright install chromium`.
+- **Token Limits?**: The engine handles 100 pages using chunking, but for extremely dense pages, you may need to reduce `CHUNK_SIZE` in the code.
